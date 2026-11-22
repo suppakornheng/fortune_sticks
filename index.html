@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>เสี่ยงเซียมซีออนไลน์ - ศาลเจ้ามงคล</title>
+    <!-- นำเข้า Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- นำเข้า Google Fonts ภาษาไทยสไตล์ร่วมสมัยและคลาสสิก -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        serif: ['Noto Serif Thai', 'serif'],
+                    },
+                    colors: {
+                        temple: {
+                            red: '#8B0000',
+                            crimson: '#B22222',
+                            dark: '#4A0404',
+                            gold: '#D4AF37',
+                            goldLight: '#F3E5AB',
+                            cream: '#FDFBF7',
+                            paper: '#F7F1E1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ลวดลายพื้นหลังสไตล์มงคล */
+        body {
+            background-color: #4A0404;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(178, 34, 34, 0.6) 0%, rgba(74, 4, 4, 0.95) 75%),
+                repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.04) 0px, rgba(212, 175, 55, 0.04) 2px, transparent 2px, transparent 12px);
+            min-height: 100vh;
+            color: #FDFBF7;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* กรอบลายจีนมงคล */
+        .temple-border {
+            border: 2px solid #D4AF37;
+            box-shadow: 0 0 0 4px #600000, 0 0 0 6px #D4AF37, 0 20px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .paper-texture {
+            background-color: #FDFBF7;
+            background-image: radial-gradient(#D4AF37 0.5px, transparent 0.5px);
+            background-size: 16px 16px;
+        }
+
+        /* แอนิเมชันเขย่ากระบอกเซียมซี */
+        @keyframes shakeCylinder {
+            0% { transform: rotate(0deg) translateY(0); }
+            15% { transform: rotate(-16deg) translateY(-12px); }
+            30% { transform: rotate(14deg) translateY(-4px); }
+            45% { transform: rotate(-18deg) translateY(-16px); }
+            60% { transform: rotate(16deg) translateY(-6px); }
+            75% { transform: rotate(-12deg) translateY(-10px); }
+            90% { transform: rotate(10deg) translateY(-2px); }
+            100% { transform: rotate(0deg) translateY(0); }
+        }
+
+        .shaking {
+            animation: shakeCylinder 0.45s cubic-bezier(.36,.07,.19,.97) infinite;
+            transform-origin: bottom center;
+        }
+
+        /* แอนิเมชันไม้เซียมซีเด้งหล่นออกมา */
+        @keyframes stickDrop {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            40% { transform: translateY(-65px) rotate(12deg); }
+            100% { transform: translateY(110px) rotate(42deg); opacity: 0; }
+        }
+
+        .stick-falling {
+            animation: stickDrop 0.85s ease-in forwards;
+        }
+
+        /* แอนิเมชันเปิดใบเซียมซี */
+        @keyframes cardReveal {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .reveal-card {
+            animation: cardReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* ปุ่มสีทองสไตล์มงคล */
+        .btn-gold {
+            background: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 50%, #AA820A 100%);
+            color: #3D0000;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+            transition: all 0.2s ease;
+        }
+        .btn-gold:hover {
+            filter: brightness(1.06);
+            transform: translateY(-1px);
+        }
+        .btn-gold:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #4A0404;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-between py-6 px-4 select-none">
+
+    <!-- ส่วนหัว (Header) -->
+    <header class="w-full max-w-lg text-center mb-4">
+        <div class="inline-flex items-center justify-center gap-2 px-4 py-1 rounded-full bg-temple-dark/80 border border-temple-gold/50 text-temple-goldLight text-xs tracking-widest mb-2">
+            <span>✦</span>
+            <span>ศาลเจ้ามงคล • พยากรณ์โชคชะตา</span>
+            <span>✦</span>
+        </div>
+        <h1 class="font-serif text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-yellow-200 via-temple-gold to-yellow-600 drop-shadow-md">
+            เสี่ยงเซียมซีออนไลน์
+        </h1>
+        <p class="text-temple-goldLight/80 text-sm mt-1">ตั้งจิตอธิษฐานให้มั่น แล้วเขย่ากระบอกเซียมซี</p>
+    </header>
+
+    <!-- พื้นที่หลัก (Main Container) -->
+    <main class="w-full max-w-lg flex-grow flex flex-col items-center justify-center">
+
+        <!-- หน้าจอที่ 1: หน้าอธิษฐานและกระบอกเซียมซี -->
+        <section id="shaker-section" class="w-full flex flex-col items-center">
+            
+            <!-- กล่องแนะนำขั้นตอนการอธิษฐาน -->
+            <div class="w-full bg-temple-dark/70 backdrop-blur-sm border border-temple-gold/40 rounded-2xl p-4 mb-6 text-sm shadow-lg">
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="font-serif font-semibold text-temple-gold flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1z"/></svg>
+                        ขั้นตอนการอธิษฐานเสี่ยงทาย
+                    </h2>
+                    <button id="sound-toggle" class="text-xs px-2.5 py-1 rounded-full bg-temple-red/80 border border-temple-gold/40 text-temple-goldLight flex items-center gap-1 hover:bg-temple-crimson transition" title="เปิด/ปิดเสียง">
+                        <span id="sound-icon">🔊</span>
+                        <span id="sound-text">เสียงเปิด</span>
+                    </button>
+                </div>
+                <ol class="list-decimal list-inside space-y-1 text-temple-cream/90 text-xs sm:text-sm leading-relaxed">
+                    <li>ทำจิตใจให้สงบ นึกถึงสิ่งศักดิ์สิทธิ์ที่เคารพนับถือ</li>
+                    <li>บอกชื่อ-นามสกุล วันเดือนปีเกิด และเรื่องที่ต้องการขอคำชี้แนะ (ทีละ 1 เรื่อง)</li>
+                    <li>กดปุ่ม <strong>"เขย่าเซียมซี"</strong> แตะที่กระบอก หรือ <strong>เขย่าโทรศัพท์มือถือ</strong></li>
+                </ol>
+            </div>
+
+            <!-- ภาพกระบอกเซียมซี SVG แบบละเอียด -->
+            <div class="relative w-64 h-72 flex items-center justify-center my-2 cursor-pointer group" id="cylinder-wrapper" role="button" aria-label="แตะเพื่อเขย่ากระบอกเซียมซี">
+                <!-- แสงออร่าด้านหลังกระบอก -->
+                <div class="absolute w-48 h-48 rounded-full bg-temple-gold/20 blur-2xl group-hover:bg-temple-gold/30 transition duration-500"></div>
+
+                <!-- SVG กระบอกเซียมซีและไม้ติ้ว -->
+                <svg id="esiimsi-svg" viewBox="0 0 240 280" class="w-full h-full drop-shadow-2xl overflow-visible">
+                    <defs>
+                        <!-- ไล่ระดับสีกระบอกไม้ไผ่เคลือบแดง -->
+                        <linearGradient id="cylinderGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#5C0000"/>
+                            <stop offset="25%" stop-color="#A80000"/>
+                            <stop offset="55%" stop-color="#800000"/>
+                            <stop offset="85%" stop-color="#4D0000"/>
+                            <stop offset="100%" stop-color="#2E0000"/>
+                        </linearGradient>
+                        <!-- ไล่ระดับสีขอบทอง -->
+                        <linearGradient id="goldBand" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#8A6608"/>
+                            <stop offset="30%" stop-color="#F7E596"/>
+                            <stop offset="50%" stop-color="#D4AF37"/>
+                            <stop offset="80%" stop-color="#99730C"/>
+                            <stop offset="100%" stop-color="#6E5004"/>
+                        </linearGradient>
+                        <!-- ไล่ระดับสีไม้ติ้ว -->
+                        <linearGradient id="stickGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#C89D66"/>
+                            <stop offset="50%" stop-color="#E8C391"/>
+                            <stop offset="100%" stop-color="#A67B46"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- ปากกระบอกด้านหลัง -->
+                    <ellipse cx="120" cy="95" rx="46" ry="12" fill="#2A0000" stroke="#D4AF37" stroke-width="2"/>
+
+                    <!-- กลุ่มไม้เซียมซีในกระบอก -->
+                    <g id="sticks-group">
+                        <!-- ไม้ติ้วซ้าย -->
+                        <g transform="translate(88, 30) rotate(-14)">
+                            <rect x="0" y="0" width="9" height="85" rx="2" fill="url(#stickGrad)" stroke="#7A5226" stroke-width="0.8"/>
+                            <rect x="0" y="0" width="9" height="16" rx="1" fill="#B22222"/>
+                        </g>
+                        <!-- ไม้ติ้วซ้ายกลาง -->
+                        <g transform="translate(102, 22) rotate(-6)">
+                            <rect x="0" y="0" width="9" height="90" rx="2" fill="url(#stickGrad)" stroke="#7A5226" stroke-width="0.8"/>
+                            <rect x="0" y="0" width="9" height="16" rx="1" fill="#B22222"/>
+                        </g>
+                        <!-- ไม้ติ้วเอก (ไม้ที่จะหล่นออกมา) -->
+                        <g id="lucky-stick" transform="translate(115, 18) rotate(2)">
+                            <rect x="0" y="0" width="10" height="95" rx="2" fill="#F3D098" stroke="#7A5226" stroke-width="1"/>
+                            <rect x="0" y="0" width="10" height="18" rx="1" fill="#D40000"/>
+                            <text x="5" y="13" font-size="8" fill="#FFD700" text-anchor="middle" font-weight="bold">吉</text>
+                        </g>
+                        <!-- ไม้ติ้วขวากลาง -->
+                        <g transform="translate(130, 24) rotate(8)">
+                            <rect x="0" y="0" width="9" height="88" rx="2" fill="url(#stickGrad)" stroke="#7A5226" stroke-width="0.8"/>
+                            <rect x="0" y="0" width="9" height="16" rx="1" fill="#B22222"/>
+                        </g>
+                        <!-- ไม้ติ้วขวา -->
+                        <g transform="translate(143, 33) rotate(16)">
+                            <rect x="0" y="0" width="9" height="82" rx="2" fill="url(#stickGrad)" stroke="#7A5226" stroke-width="0.8"/>
+                            <rect x="0" y="0" width="9" height="16" rx="1" fill="#B22222"/>
+                        </g>
+                    </g>
+
+                    <!-- ตัวกระบอกเซียมซี -->
+                    <path d="M 74 95 L 78 245 C 78 256, 162 256, 162 245 L 166 95 C 166 107, 74 107, 74 95 Z" fill="url(#cylinderGrad)"/>
+                    
+                    <!-- ขอบปากกระบอกด้านหน้า -->
+                    <path d="M 74 95 C 74 107, 166 107, 166 95 L 166 104 C 166 116, 74 116, 74 104 Z" fill="url(#goldBand)"/>
+
+                    <!-- แถบคาดกลางกระบอก -->
+                    <path d="M 76 168 C 76 177, 164 177, 164 168 L 164 175 C 164 184, 76 184, 76 175 Z" fill="url(#goldBand)"/>
+
+                    <!-- ฐานกระบอกด้านล่าง -->
+                    <path d="M 78 238 C 78 248, 162 248, 162 238 L 162 248 C 162 259, 78 259, 78 248 Z" fill="url(#goldBand)"/>
+
+                    <!-- ป้ายอักษรมงคลกลางกระบอก -->
+                    <g transform="translate(120, 142)">
+                        <rect x="-22" y="-22" width="44" height="44" rx="6" transform="rotate(45)" fill="#4A0404" stroke="#D4AF37" stroke-width="2.5"/>
+                        <text x="0" y="7" font-family="serif" font-size="22" font-weight="bold" fill="#F3E5AB" text-anchor="middle">靈籤</text>
+                    </g>
+
+                    <!-- ป้ายอักษรด้านล่าง -->
+                    <text x="120" y="215" font-family="Prompt, sans-serif" font-size="13" font-weight="600" fill="#D4AF37" text-anchor="middle" letter-spacing="2">เซียมซีมงคล</text>
+                </svg>
+            </div>
+
+            <!-- สถานะการเขย่า -->
+            <p id="status-text" class="h-6 text-sm font-medium text-temple-goldLight mb-4 text-center">
+                แตะที่กระบอก หรือกดปุ่มด้านล่างเพื่อเริ่มเสี่ยงทาย
+            </p>
+
+            <!-- ปุ่มควบคุมหลัก -->
+            <div class="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
+                <button id="shake-btn" class="btn-gold w-full py-3.5 px-6 rounded-xl font-semibold text-base sm:text-lg flex items-center justify-center gap-2 cursor-pointer">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>เขย่าเซียมซี</span>
+                </button>
+            </div>
+
+            <!-- ปุ่มขอสิทธิ์เซนเซอร์เขย่ามือถือ (แสดงเฉพาะอุปกรณ์ที่รองรับ) -->
+            <button id="motion-permission-btn" class="hidden mt-3 text-xs text-temple-goldLight/80 underline hover:text-temple-gold transition">
+                📱 เปิดใช้งานโหมดเขย่าโทรศัพท์มือถือจริง
+            </button>
+        </section>
+
+        <!-- หน้าจอที่ 2: แสดงผลใบเซียมซี (ซ่อนไว้ตอนเริ่มต้น) -->
+        <section id="result-section" class="hidden w-full flex flex-col items-center reveal-card">
+            
+            <!-- การ์ดใบเซียมซี -->
+            <div id="fortune-card" class="w-full paper-texture text-stone-800 rounded-2xl p-5 sm:p-7 temple-border relative overflow-hidden">
+                
+                <!-- ลายมุมกรอบจีน -->
+                <div class="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-temple-red"></div>
+                <div class="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-temple-red"></div>
+                <div class="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-temple-red"></div>
+                <div class="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-temple-red"></div>
+
+                <!-- ส่วนหัวใบเซียมซี -->
+                <div class="text-center border-b-2 border-dashed border-temple-red/30 pb-4 mb-4">
+                    <p class="text-xs font-semibold tracking-widest text-temple-red uppercase">ใบพยากรณ์ศาลเจ้ามงคล</p>
+                    <div class="flex items-center justify-center gap-3 mt-1">
+                        <span class="h-[1px] w-8 bg-temple-gold"></span>
+                        <h2 id="res-number" class="font-serif text-3xl sm:text-4xl font-bold text-temple-red">ใบที่ 1</h2>
+                        <span class="h-[1px] w-8 bg-temple-gold"></span>
+                    </div>
+                    <div class="mt-2 inline-block">
+                        <span id="res-level" class="px-3.5 py-1 rounded-full text-xs sm:text-sm font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                            ระดับ: ดีมาก (上上籤)
+                        </span>
+                    </div>
+                </div>
+
+                <!-- กลอนคำทำนาย -->
+                <div class="bg-amber-50/90 border border-amber-200/80 rounded-xl p-4 mb-4 text-center shadow-inner">
+                    <p id="res-poem" class="font-serif text-base sm:text-lg font-semibold text-temple-dark leading-relaxed whitespace-pre-line">
+                        ...
+                    </p>
+                </div>
+
+                <!-- คำทำนายภาพรวม -->
+                <div class="mb-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-temple-red mb-1">คำทำนายโดยรวม</h3>
+                    <p id="res-general" class="text-sm text-stone-700 leading-relaxed">
+                        ...
+                    </p>
+                </div>
+
+                <!-- รายละเอียดแยกตามด้าน (การงาน, การเงิน, ความรัก, สุขภาพ) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                    <div class="bg-white/80 p-3 rounded-xl border border-stone-200/80">
+                        <div class="font-semibold text-temple-red flex items-center gap-1.5 mb-1">
+                            <span>💼</span> การงาน / การเรียน
+                        </div>
+                        <p id="res-work" class="text-stone-600 text-xs sm:text-sm leading-snug"></p>
+                    </div>
+                    <div class="bg-white/80 p-3 rounded-xl border border-stone-200/80">
+                        <div class="font-semibold text-temple-red flex items-center gap-1.5 mb-1">
+                            <span>💰</span> การเงิน / โชคลาภ
+                        </div>
+                        <p id="res-finance" class="text-stone-600 text-xs sm:text-sm leading-snug"></p>
+                    </div>
+                    <div class="bg-white/80 p-3 rounded-xl border border-stone-200/80">
+                        <div class="font-semibold text-temple-red flex items-center gap-1.5 mb-1">
+                            <span>💖</span> ความรัก / ครอบครัว
+                        </div>
+                        <p id="res-love" class="text-stone-600 text-xs sm:text-sm leading-snug"></p>
+                    </div>
+                    <div class="bg-white/80 p-3 rounded-xl border border-stone-200/80">
+                        <div class="font-semibold text-temple-red flex items-center gap-1.5 mb-1">
+                            <span>🌿</span> สุขภาพ / คำแนะนำ
+                        </div>
+                        <p id="res-health" class="text-stone-600 text-xs sm:text-sm leading-snug"></p>
+                    </div>
+                </div>
+
+                <!-- ตราประทับท้ายใบ -->
+                <div class="mt-4 pt-3 border-t border-stone-200 flex items-center justify-between text-[11px] text-stone-400">
+                    <span>ขอให้โชคดีมีชัย สมปรารถนาทุกประการ</span>
+                    <span class="font-serif text-temple-red/70 font-bold border border-temple-red/40 px-1.5 py-0.5 rounded">มงคลพยากรณ์</span>
+                </div>
+            </div>
+
+            <!-- ปุ่มจัดการหลังได้คำทำนาย -->
+            <div class="w-full grid grid-cols-2 gap-3 mt-5">
+                <button id="save-img-btn" class="btn-gold py-3 px-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    <span>บันทึกภาพใบเซียมซี</span>
+                </button>
+                <button id="share-btn" class="bg-temple-dark/90 hover:bg-temple-dark text-temple-goldLight border border-temple-gold/60 py-3 px-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                    </svg>
+                    <span>แชร์คำทำนาย</span>
+                </button>
+            </div>
+
+            <button id="reset-btn" class="mt-3 w-full py-2.5 px-4 rounded-xl text-sm text-temple-goldLight/90 hover:text-white bg-white/10 hover:bg-white/15 border border-white/10 transition flex items-center justify-center gap-2 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                <span>เสี่ยงใหม่อีกครั้ง</span>
+            </button>
+        </section>
+
+    </main>
+
+    <!-- กล่องแจ้งเตือนแบบกำหนดเอง (Toast Message) แทน alert() -->
+    <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-stone-900/95 text-temple-goldLight border border-temple-gold px-5 py-2.5 rounded-full text-sm shadow-2xl opacity-0 pointer-events-none transition-opacity duration-300 z-50 flex items-center gap-2 whitespace-nowrap">
+        <span id="toast-icon">✨</span>
+        <span id="toast-msg">ข้อความแจ้งเตือน</span>
+    </div>
+
+    <!-- ส่วนท้าย (Footer) -->
+    <footer class="w-full max-w-lg text-center mt-6 text-xs text-temple-goldLight/50">
+        <p>ใช้เพื่อเป็นแนวทางเตือนสติและเสริมกำลังใจในการดำเนินชีวิต</p>
+    </footer>
+
+    <!-- JavaScript ระบบทั้งหมด -->
+    <script>
+        /**
+         * 1. ข้อมูลคำทำนายเซียมซีครบ 28 ใบ (ครอบคลุม ดีมาก, ปานกลาง, ควรระวัง)
+         */
+        const FORTUNE_DATA = [
+            {
+                num: 1, level: "ดีมาก", tag: "上上籤",
+                poem: "ใบที่หนึ่งสมหวังดังใจคิด\nดั่งอาทิตย์ส่องฟ้าพาสดใส\nทำสิ่งใดสำเร็จเสร็จสมใจ\nโชคลาภใหญ่ไหลมาหาตัวเอย",
+                general: "เป็นฤกษ์ยามอันประเสริฐ สิ่งที่รอคอยหรือตั้งใจทำจะประสบผลสำเร็จอย่างงดงาม มีผู้ใหญ่คอยเกื้อหนุน",
+                work: "ก้าวหน้าโดดเด่น งานที่ติดขัดจะคลี่คลาย ได้รับความไว้วางใจจากหัวหน้าหรือลูกค้า",
+                finance: "คล่องตัวดีมาก มีเกณฑ์ได้โชคลาภหรือผลตอบแทนจากการลงทุนที่ลงแรงไว้",
+                love: "คนโสดมีเกณฑ์พบคนถูกใจที่ศีลเสมอกัน คนมีคู่เข้าใจกันดีและมีข่าวดีร่วมกัน",
+                health: "ร่างกายแข็งแรง จิตใจแจ่มใส ควรทำบุญเติมน้ำมันตะเกียงเพื่อเสริมสิริมงคล"
+            },
+            {
+                num: 2, level: "ปานกลาง", tag: "中平籤",
+                poem: "ใบที่สองต้องรอจังหวะเหมาะ\nอย่าใจร้อนรีบเหาะจะเสียผล\nค่อยเป็นค่อยไปใช้ความอดทน\nผ่านพ้นฝนฟ้าใสได้ดังปอง",
+                general: "สถานการณ์อยู่ในช่วงทรงตัว ต้องอาศัยความใจเย็นและความรอบคอบ ไม่ควรเร่งรีบตัดสินใจเรื่องใหญ่",
+                work: "งานประจำราบรื่นดี แต่หากคิดขยับขยายหรือเปลี่ยนงานควรรอดูจังหวะอีกสักระยะ",
+                finance: "พอมีพอกิน ไม่เดือดร้อน แต่ยังไม่ควรให้ใครหยิบยืมเงินในช่วงนี้",
+                love: "ความสัมพันธ์เรื่อยๆ เรียบง่าย ควรหาเวลาพูดคุยหรือทำกิจกรรมร่วมกันมากขึ้น",
+                health: "ระวังอาการปวดเมื่อยกล้ามเนื้อหรือออฟฟิศซินโดรม ควรพักผ่อนให้เพียงพอ"
+            },
+            {
+                num: 3, level: "ดีมาก", tag: "上上籤",
+                poem: "ใบที่สามดั่งมังกรทะยานเมฆ\nพ้นอุปสรรคเสกสร้างทางสดใส\nศัตรูแพ้พ่ายมลายไป\nชื่อเสียงไกลก้องฟ้าพารุ่งเรือง",
+                general: "ดวงชะตากำลังพุ่งทะยาน อุปสรรคที่เคยขัดขวางจะแพ้ภัยไปเอง เหมาะแก่การเริ่มต้นสิ่งใหม่ๆ",
+                work: "ประสบความสำเร็จเกินคาด การเจรจาธุรกิจหรือการสอบแข่งขันจะสมหวัง",
+                finance: "มีรายรับเข้ามาหลายทาง การเงินมั่นคงขึ้นอย่างเห็นได้ชัด",
+                love: "เสน่ห์แรง มีคนเข้ามาทำความรู้จัก ส่วนคนมีคู่จะช่วยกันสร้างฐานะได้ดี",
+                health: "แข็งแรงสมบูรณ์ดี หากเจ็บป่วยอยู่จะพบหมอดียาดีอาการทุเลาลง"
+            },
+            {
+                num: 4, level: "ควรระวัง", tag: "下下籤",
+                poem: "ใบที่สี่เปรียบเรือล่องกลางคลื่นลม\nอย่าหลงคมคำหวานพาหวั่นไหว\nตั้งสติมั่นคงดำรงใจ\nหมั่นทำบุญหนุนไว้จะปลอดภัย",
+                general: "ช่วงนี้มีเกณฑ์เผชิญบททดสอบหรือเรื่องจุกจิกกวนใจ ขอให้มีสติ อย่าหูเบาเชื่อคนง่าย",
+                work: "ระวังความผิดพลาดด้านเอกสารหรือการสื่อสาร ควรตรวจสอบงานให้ถี่ถ้วนก่อนส่ง",
+                finance: "มีรายจ่ายกะทันหันเกี่ยวกับการซ่อมแซมหรือคนรอบข้าง ควรสำรองเงินไว้",
+                love: "ระวังความเข้าใจผิดจากเรื่องเล็กน้อย ควรหันหน้าคุยกันด้วยเหตุผล อย่าใช้อารมณ์",
+                health: "ระวังอุบัติเหตุเล็กน้อยจากการเดินทาง หรือพักผ่อนน้อยจนภูมิคุ้มกันตก"
+            },
+            {
+                num: 5, level: "ดีมาก", tag: "上吉籤",
+                poem: "ใบที่ห้าพฤกษาผลิดอกออกผล\nที่เคยทนเหนื่อยยากจะคลายหาย\nบุญกุศลหนุนนำสุขสบาย\nสมดังหมายทุกสิ่งมิ่งมงคล",
+                general: "ความพยายามที่ทุ่มเทมาตลอดกำลังจะผลิดอกออกผล เป็นช่วงเวลาแห่งการเก็บเกี่ยวความสำเร็จ",
+                work: "ผลงานเข้าตาผู้ใหญ่ มีโอกาสได้เลื่อนขั้น ปรับตำแหน่ง หรือได้โปรเจกต์สำคัญ",
+                finance: "มีโชคจากการทำงานและความขยัน หนี้สินที่มีจะเริ่มคลี่คลายเบาบางลง",
+                love: "ความรักอบอุ่นมั่นคง คนที่ห่างไกลจะได้กลับมาพบหน้าหรือติดต่อกันมากขึ้น",
+                health: "สุขภาพกายและใจสมดุลดี หมั่นทำทานปล่อยชีวิตสัตว์จะยิ่งเสริมดวง"
+            },
+            {
+                num: 6, level: "ปานกลาง", tag: "中吉籤",
+                poem: "ใบที่หกเดินทางไกลได้ลาภผล\nพบผู้คนมากมิตรจิตแจ่มใส\nแม้นเหนื่อยกายแต่สุขล้นในหัวใจ\nก้าวต่อไปอย่างมั่นคงตรงเส้นทาง",
+                general: "มีเกณฑ์การเดินทางหรือเปลี่ยนแปลงสภาพแวดล้อม ซึ่งจะนำพาโอกาสและประสบการณ์ที่ดีมาให้",
+                work: "เหมาะกับงานที่ต้องติดต่อประสานงาน เดินทาง หรือค้าขายออนไลน์จะมียอดดี",
+                finance: "ได้มาจ่ายไป หมุนเวียนคล่องตัวดี แต่ควรแบ่งเก็บออมไว้บางส่วน",
+                love: "คนโสดอาจพบรักจากการเดินทางหรือเพื่อนแนะนำ คนมีคู่เข้าใจกันดี",
+                health: "ระวังเรื่องระบบทางเดินอาหาร ควรรับประทานอาหารที่ปรุงสุกใหม่เสมอ"
+            },
+            {
+                num: 7, level: "ดีมาก", tag: "上上籤",
+                poem: "ใบที่เจ็ดเพชรแท้ย่อมส่องแสง\nฟ้าเปิดทางสว่างแจ้งทุกแห่งหน\nคิดทำการสิ่งใดไม่อับจน\nเทวดาดลบันดาลให้สมปอง",
+                general: "เป็นใบแห่งปัญญาและความสำเร็จ สิ่งที่ติดขัดมานานจะพบทางออกอย่างน่าอัศจรรย์",
+                work: "ไอเดียและความสามารถจะได้รับการยอมรับ เหมาะแก่การเริ่มธุรกิจหรือโครงการใหม่",
+                finance: "มีเกณฑ์ได้รับเงินก้อน หรือได้ของมีค่าที่ถูกใจ",
+                love: "คนรักเอาใจใส่ดูแลเป็นอย่างดี คนโสดจะมีผู้ใหญ่ชักนำคนดีมาให้รู้จัก",
+                health: "สุขภาพแข็งแรงดีมาก แนะนำให้ไหว้พระขอพรเสริมบารมี"
+            },
+            {
+                num: 8, level: "ควรระวัง", tag: "中下籤",
+                poem: "ใบที่แปดเมฆหมอกบังดวงจันทร์\nอย่าดึงดันเดินหน้ายามฟ้าฝน\nสงบนิ่งรักษาใจในตัวตน\nรอเมฆพ้นจันทร์กระจ่างสว่างตา",
+                general: "ยังไม่ควรเสี่ยงลงทุนหรือเปลี่ยนแปลกอะไรใหญ่ๆ ในตอนนี้ ให้ประคับประคองสถานการณ์ไปก่อน",
+                work: "อาจเจอภาระงานหนักหรือเพื่อนร่วมงานไม่ค่อยให้ความร่วมมือ ต้องพึ่งพาตนเองเป็นหลัก",
+                finance: "งดการเสี่ยงโชคและการลงทุนที่มีความเสี่ยงสูง เน้นประหยัดไว้ก่อน",
+                love: "ต่างคนต่างมีเรื่องให้คิด ทำให้เวลาให้กันน้อยลง ควรเปิดใจคุยกันอย่างอ่อนโยน",
+                health: "ระวังความเครียดสะสมและอาการปวดศีรษะ ควรหาเวลาผ่อนคลาย"
+            },
+            {
+                num: 9, level: "ดีมาก", tag: "上吉籤",
+                poem: "ใบที่เก้าก้าวหน้าพาสุขสันต์\nดั่งตะวันทอแสงยามรุ่งสาง\nทรัพย์สินเงินทองไหลมาตามทาง\nทุกสิ่งอย่างราบรื่นชื่นอุรา",
+                general: "ความก้าวหน้าและสิริมงคลกำลังมาเยือน ทำสิ่งใดก็ราบรื่นไร้อุปสรรคใหญ่",
+                work: "กิจการค้าขายเจริญรุ่งเรือง พนักงานประจำจะได้รับคำชมและผลตอบแทนที่ดี",
+                finance: "การเงินโดดเด่น มีโชคลาภเข้ามาอย่างต่อเนื่อง",
+                love: "ความรักสดใสเบิกบาน มีเกณฑ์วางแผนอนาคตร่วมกันอย่างจริงจัง",
+                health: "สุขภาพแข็งแรงดี ควรหมั่นสวดมนต์ไหว้พระก่อนนอน"
+            },
+            {
+                num: 10, level: "ปานกลาง", tag: "中平籤",
+                poem: "ใบที่สิบเปรียบน้ำนิ่งไหลลึก\nหมั่นตรองตรึกวางแผนให้ถ้วนถี่\nความซื่อสัตย์สุจริตคือความดี\nจะพาชีวีพ้นภัยในทุกกาล",
+                general: "ความซื่อตรงและความรอบคอบจะช่วยให้ผ่านพ้นทุกเรื่องไปได้ อย่าหลงเชื่อทางลัดที่ไม่โปร่งใส",
+                work: "งานดำเนินไปตามขั้นตอน อาจช้าบ้างแต่มั่นคง ควรรักษามาตรฐานการทำงานไว้",
+                finance: "รายรับคงที่ ไม่หวือหวาแต่ไม่ขาดมือ วางแผนใช้จ่ายได้ดี",
+                love: "ความสัมพันธ์ต้องการความสม่ำเสมอและการใส่ใจในรายละเอียดเล็กๆ น้อยๆ",
+                health: "ระวังอาการภูมิแพ้หรือหวัดจากการเปลี่ยนแปลงของอากาศ"
+            },
+            {
+                num: 11, level: "ดีมาก", tag: "上吉籤",
+                poem: "ใบที่สิบเอ็ดนกน้อยโผบินสูง\nพ้นบ่วงจูงสู่ฟ้ากว้างสว่างไสว\nหมดทุกข์โศกโรคภัยมลายไป\nเริ่มต้นใหม่พบพานแต่สิ่งดี",
+                general: "เป็นสัญญาณของการหลุดพ้นจากปัญหาเก่าๆ และก้าวเข้าสู่ช่วงเวลาที่ดีกว่าเดิม",
+                work: "หากกำลังมองหางานใหม่หรือโอกาสใหม่ จะได้รับข่าวดีในเร็ววัน",
+                finance: "เริ่มเห็นช่องทางสร้างรายได้ใหม่ๆ การเงินฟื้นตัวดีขึ้น",
+                love: "เรื่องเก่าๆ ที่เคยค้างคาใจจะคลี่คลาย กลับมาเริ่มต้นความเข้าใจใหม่ที่ดี",
+                health: "จิตใจเบิกบานส่งผลให้ร่างกายสดชื่นขึ้นตามไปด้วย"
+            },
+            {
+                num: 12, level: "ควรระวัง", tag: "下籤",
+                poem: "ใบที่สิบสองต้องระวังคำพูดจา\nอาจนำพาเรื่องร้อนใจมาสู่ตน\nคิดก่อนพูดสงบปากในฝูงชน\nจะผ่านพ้นเคราะห์ภัยได้ด้วยดี",
+                general: "ระวังการขัดแย้งทางคำพูดหรือการรับปากใครโดยไม่ทันคิด ควรอยู่อย่างสงบเสงี่ยม",
+                work: "หลีกเลี่ยงการเข้าไปยุ่งเกี่ยวกับเรื่องซุบซิบในที่ทำงาน ตั้งใจทำหน้าที่ของตนให้ดีที่สุด",
+                finance: "ระวังเสียเงินเพราะความใจอ่อนหรือช่วยเหลือคนอื่นเกินกำลัง",
+                love: "ระวังคำพูดที่รุนแรงโดยไม่ตั้งใจจะทำร้ายความรู้สึกของคนรัก",
+                health: "ระวังอาการเจ็บคอ ร้อนใน หรือพักผ่อนไม่เพียงพอ"
+            },
+            {
+                num: 13, level: "ดีมาก", tag: "上上籤",
+                poem: "ใบที่สิบสามสวรรค์ประทานพร\nคลายทุกข์ร้อนผ่อนหนักให้เป็นเบา\nมีกัลยาณมิตรคอยเคียงข้างเรา\nคอยบรรเทาช่วยเหลือเกื้อกูลกัน",
+                general: "ดวงอุปถัมภ์โดดเด่น ไม่ว่าจะทำอะไรจะมีคนยื่นมือเข้ามาช่วยเหลือเสมอ",
+                work: "ทำงานเป็นทีมได้ดีเยี่ยม เพื่อนร่วมงานและเจ้านายสนับสนุนเต็มที่",
+                finance: "มีเกณฑ์ได้ลาภจากผู้ใหญ่หรือเพศตรงข้าม การเงินราบรื่น",
+                love: "คนรักเป็นทั้งคู่คิดและกำลังใจที่ดีมาก คนโสดจะได้เจอคนใจดีมีเมตตา",
+                health: "แข็งแรงดี ควรทำบุญบริจาคทานให้ผู้ยากไร้เพื่อเสริมดวง"
+            },
+            {
+                num: 14, level: "ปานกลาง", tag: "中吉籤",
+                poem: "ใบที่สิบสี่ดั่งสายน้ำไหลริน\nค่อยเซาะหินทีละน้อยจนเห็นผล\nความขยันหมั่นเพียรในกมล\nจะส่งผลให้สำเร็จในบั้นปลาย",
+                general: "ความสำเร็จต้องใช้เวลาสะสม ไม่ใช่เรื่องฉาบฉวย ขอให้อดทนทำต่อไปอย่าเพิ่งท้อ",
+                work: "งานต้องอาศัยความละเอียดและความอดทนสูง แต่ผลลัพธ์จะคุ้มค่าเหนื่อย",
+                finance: "เก็บเล็กผสมน้อยจะกลายเป็นเงินก้อนในอนาคต",
+                love: "ความรักค่อยๆ พัฒนาจากความเป็นเพื่อนไปสู่ความผูกพันที่ลึกซึ้ง",
+                health: "ควรดื่มน้ำให้มากขึ้นและออกกำลังกายเบาๆ อย่างสม่ำเสมอ"
+            },
+            {
+                num: 15, level: "ดีมาก", tag: "上吉籤",
+                poem: "ใบที่สิบห้าฟ้าเปิดทางสว่าง\nทรัพย์สินวางเรียงรายอยู่เบื้องหน้า\nทั้งการงานความรักสมอุรา\nวาสนาส่งให้ได้ดังใจ",
+                general: "จังหวะชีวิตกำลังเปิดกว้าง โอกาสดีๆ กำลังวิ่งเข้ามาหา จงรีบคว้าไว้ด้วยความมั่นใจ",
+                work: "ธุรกิจการค้ามีกำไรงาม งานประจำมีความโดดเด่นเป็นที่จับตามอง",
+                finance: "คล่องมือมาก อาจมีโชคลาภลอยเล็กๆ น้อยๆ เข้ามาให้ชื่นใจ",
+                love: "เสน่ห์เมตตามหานิยมสูง ใครเห็นใครก็เอ็นดู ความรักสมหวัง",
+                health: "สุขภาพดีเยี่ยม ไม่มีเรื่องน่ากังวล"
+            },
+            {
+                num: 16, level: "ควรระวัง", tag: "中下籤",
+                poem: "ใบที่สิบหกของหายอาจได้คืน\nแต่อย่าฝืนทำสิ่งเกินกำลัง\nระวังหลงลืมสติพลั้งเผลอพลั้ง\nตั้งใจฟังผู้ใหญ่เตือนจะปลอดภัย",
+                general: "ช่วงนี้มักขี้หลงขี้ลืมหรือวอกแวกง่าย ควรจัดระเบียบชีวิตและรับฟังคำแนะนำจากผู้มีประสบการณ์",
+                work: "งานค่อนข้างยุ่งเหยิง ควรจัดลำดับความสำคัญให้ดีเพื่อไม่ให้เกิดความล่าช้า",
+                finance: "ระวังทำของมีค่าสูญหาย หรือจ่ายเงินไปกับสิ่งที่ไม่จำเป็น",
+                love: "อย่าปล่อยให้ความห่างเหินหรือความเงียบเข้ามาทำลายความสัมพันธ์",
+                health: "ระวังสายตาล้าจากการจ้องหน้าจอนานๆ ควรพักสายตาบ้าง"
+            },
+            {
+                num: 17, level: "ปานกลาง", tag: "中平籤",
+                poem: "ใบที่สิบเจ็ดดั่งดอกบัวพ้นน้ำ\nต้องแสงงามยามเช้าพราวสดใส\nผ่านเรื่องราวมากมายในหัวใจ\nบัดนี้ได้พบความสงบเย็น",
+                general: "จิตใจเริ่มนิ่งและเข้าใจโลกมากขึ้น ปัญหาที่เคยกังวลใจจะเริ่มปล่อยวางได้",
+                work: "สถานการณ์ในที่ทำงานนิ่งขึ้น สามารถบริหารจัดการงานได้อย่างลงตัว",
+                finance: "สมดุลดี รายรับและรายจ่ายอยู่ในเกณฑ์ที่ควบคุมได้",
+                love: "ความรักสงบสุข ไม่หวือหวาแต่มีความเข้าใจและให้อภัยกันเสมอ",
+                health: "สุขภาพจิตดีขึ้นมาก การทำสมาธิจะช่วยให้หลับสบาย"
+            },
+            {
+                num: 18, level: "ดีมาก", tag: "上上籤",
+                poem: "ใบที่สิบแปดโชคลาภมาเยือนถึงที่\nข่าวดีมีมาให้ได้สุขสันต์\nสิ่งที่หวังตั้งใจไว้เนิ่นนานวัน\nจะพลิกผันสำเร็จเสร็จสมปอง",
+                general: "จะมีข่าวดีเข้ามาแบบไม่ทันตั้งตัว สิ่งที่เคยคิดว่ายากจะกลับกลายเป็นง่าย",
+                work: "มีโอกาสได้รับข้อเสนอที่ดี หรือประสบความสำเร็จในการเจรจาต่อรอง",
+                finance: "มีโชคลาภเข้ามาอย่างไม่คาดฝัน การเงินมั่งคั่งขึ้น",
+                love: "คนโสดมีเกณฑ์พบรักแบบปุบปับประทับใจ คนมีคู่มีเกณฑ์ได้ของขวัญถูกใจ",
+                health: "แข็งแรงกระปรี้กระเปร่า มีพลังในการใช้ชีวิตเต็มเปี่ยม"
+            },
+            {
+                num: 19, level: "ควรระวัง", tag: "下下籤",
+                poem: "ใบที่สิบเก้าทางแยกให้เลือกเดิน\nอย่าเพลิดเพลินหลงแสงสีที่ลวงตา\nใช้ปัญญาไตร่ตรองให้ถ้วนถี่\nเลือกทางดีมีศีลธรรมนำชีวี",
+                general: "กำลังเผชิญกับการตัดสินใจครั้งสำคัญ อย่าเลือกทางที่ดูสบายแต่แฝงไปด้วยความเสี่ยง",
+                work: "ระวังถูกชักชวนไปทำในสิ่งที่ไม่ถูกต้องหรือสุ่มเสี่ยงต่อชื่อเสียง",
+                finance: "ห้ามค้ำประกันให้ใครเด็ดขาด มีเกณฑ์เดือดร้อนเรื่องเงินเพราะผู้อื่น",
+                love: "ระวังมือที่สามหรือความสัมพันธ์ที่ซับซ้อน ควรชัดเจนและซื่อสัตย์",
+                health: "ระวังโรคเกี่ยวกับความดันหรือการพักผ่อนไม่เป็นเวลา"
+            },
+            {
+                num: 20, level: "ดีมาก", tag: "上吉籤",
+                poem: "ใบที่ยี่สิบสายลมแห่งความสุข\nพัดพาทุกข์มลายหายไปสิ้น\nเกียรติยศชื่อเสียงระบือระบิล\nทรัพย์สินพูนเพิ่มเสริมบารมี",
+                general: "ดวงชะตาอยู่ในขาขึ้น ทำสิ่งใดก็ได้รับการสนับสนุนและประสบความสำเร็จอย่างงดงาม",
+                work: "เหมาะแก่การขยายกิจการ เปิดตัวสินค้า หรือเสนอผลงานสำคัญ",
+                finance: "ผลกำไรและรายได้เติบโตดี มีเงินเก็บออมมากขึ้น",
+                love: "ครอบครัวอบอุ่นปรองดอง คนรักคอยส่งเสริมสนับสนุนทุกเรื่อง",
+                health: "สุขภาพแข็งแรงสมบูรณ์ ควรหมั่นทำบุญตักบาตรเสริมสิริมงคล"
+            },
+            {
+                num: 21, level: "ปานกลาง", tag: "中吉籤",
+                poem: "ใบที่ยี่สิบเอ็ดดั่งพระจันทร์ครึ่งเสี้ยว\nแม้ไม่เต็มดวงเดียวแต่สุกใส\nอีกไม่นานจะเต็มดวงพราวอำไพ\nขอจงใจเย็นรอเวลาเอย",
+                general: "ความสำเร็จมาถึงครึ่งทางแล้ว อีกไม่นานจะสมบูรณ์พร้อม ขอให้อดทนรออีกนิด",
+                work: "งานกำลังเดินหน้าไปได้สวย แม้ยังไม่เสร็จสมบูรณ์แต่เห็นแนวโน้มที่ดีมาก",
+                finance: "ทยอยได้รับเงินตามที่ตกลงไว้ การเงินมั่นคงขึ้นตามลำดับ",
+                love: "ความสัมพันธ์กำลังพัฒนาไปในทิศทางที่ดี อย่าเร่งรัดจนเกินไป",
+                health: "แข็งแรงดี ระวังเพียงอาการปวดหลังหรือบ่าไหล่เล็กน้อย"
+            },
+            {
+                num: 22, level: "ควรระวัง", tag: "中下籤",
+                poem: "ใบที่ยี่สิบสองฝนตกในยามแล้ง\nอย่าเพิ่งเร่งหว่านพืชในตอนนี้\nเก็บเมล็ดพันธุ์ไว้รอฤดูดี\nเมื่อถึงทีฟ้าเปิดจึงลงมือ",
+                general: "ยังไม่ถึงเวลาที่เหมาะสมในการลงทุนก้อนใหญ่ ให้เก็บสะสมความรู้และทุนรอนไว้ก่อน",
+                work: "งานอาจเกิดความล่าช้าจากปัจจัยภายนอก ควรเตรียมแผนสำรองไว้เสมอ",
+                finance: "รายรับยังมาไม่เต็มเม็ดเต็มหน่วย ควรวางแผนการใช้จ่ายอย่างรัดกุม",
+                love: "ช่วงนี้อาจมีเรื่องให้ห่างกันบ้างด้วยภาระหน้าที่ แต่ความรู้สึกยังเหมือนเดิม",
+                health: "ระวังอาการเจ็บป่วยเล็กๆ น้อยๆ จากอากาศเปลี่ยนแปลง"
+            },
+            {
+                num: 23, level: "ดีมาก", tag: "上上籤",
+                poem: "ใบที่ยี่สิบสามหงส์คู่เคียงมังกร\nสุขถาวรสมหวังดังใจหมาย\nทั้งการงานการเงินไม่เดียวดาย\nสุขสบายร่มเย็นเป็นนิรันดร์",
+                general: "เป็นใบแห่งความเป็นสิริมงคลและความสมดุล ทุกด้านของชีวิตส่งเสริมกันเป็นอย่างดี",
+                work: "การร่วมหุ้นหรือทำงานร่วมกับผู้อื่นจะประสบความสำเร็จอย่างยิ่งใหญ่",
+                finance: "มีโชคลาภและความมั่งคั่ง เงินทองไหลมาเทมาไม่ขาดสาย",
+                love: "โดดเด่นมาก! คนโสดจะพบคู่แท้ คนมีคู่มีเกณฑ์แต่งงานหรือมีข่าวดีเรื่องบุตร",
+                health: "สุขภาพกายและใจแข็งแรงสมบูรณ์ดีเยี่ยม"
+            },
+            {
+                num: 24, level: "ปานกลาง", tag: "中平籤",
+                poem: "ใบที่ยี่สิบสี่เดินทางสายกลาง\nไม่ยึดติดปล่อยวางทุกปัญหา\nยิ้มรับทุกสิ่งด้วยเมตตา\nแล้วชีวาจะพบสุขที่แท้จริง",
+                general: "ความพอดีและจิตใจที่ปล่อยวางจะทำให้ชีวิตมีความสุข อย่าเก็บเรื่องเล็กน้อยมาคิดมาก",
+                work: "ทำงานตามหน้าที่ให้ดีที่สุด ไม่ต้องเปรียบเทียบกับใคร แล้วจะสบายใจ",
+                finance: "พอเพียงและเพียงพอ ไม่เดือดร้อนเรื่องเงินทอง",
+                love: "ลดความคาดหวังลงบ้าง แล้วจะเห็นความน่ารักและความดีของคนข้างกายมากขึ้น",
+                health: "สุขภาพแข็งแรงดี การพักผ่อนให้เพียงพอคือยาวิเศษที่สุด"
+            },
+            {
+                num: 25, level: "ดีมาก", tag: "上吉籤",
+                poem: "ใบที่ยี่สิบห้าปัญญานำพาทรัพย์\nสิ่งดีงามขยับเข้ามาหา\nความดีที่ทำไว้แต่ก่อนมา\nส่งผลพารุ่งเรืองเฟื่องฟูไกล",
+                general: "บุญเก่าและกุศลกรรมที่ทำไว้กำลังส่งผลตอบแทน ทำให้แคล้วคลาดปลอดภัยและพบเจอแต่เรื่องดี",
+                work: "ความสามารถเฉพาะตัวจะสร้างรายได้และชื่อเสียงให้เป็นอย่างดี",
+                finance: "มีโชคทางการเงิน ได้รับผลตอบแทนที่คุ้มค่า",
+                love: "พบเจอคนที่มีความคิดเป็นผู้ใหญ่ คอยแนะนำสิ่งดีๆ ให้แก่กัน",
+                health: "แข็งแรงดี แนะนำให้ไหว้พระปางสมาธิหรือทำบุญเกี่ยวกับการศึกษา"
+            },
+            {
+                num: 26, level: "ควรระวัง", tag: "下籤",
+                poem: "ใบที่ยี่สิบหกเรือจอดเทียบท่า\nตรวจตราใบเรือให้พร้อมสรรพ\nคลื่นลมแรงข้างหน้าจงตั้งรับ\nอย่าประมาทจะกลับปลอดภัยเอย",
+                general: "เตือนให้ไม่ประมาทในการใช้ชีวิตและการเดินทาง ควรตรวจสอบความพร้อมในทุกเรื่องก่อนลงมือ",
+                work: "ระวังความขัดแย้งทางความคิดกับผู้ร่วมงาน ควรรับฟังให้มากและใจเย็น",
+                finance: "ระวังรายจ่ายฉุกเฉิน ควรสำรองเงินสดติดตัวไว้เสมอ",
+                love: "อย่าขุดคุ้ยเรื่องเก่าในอดีตขึ้นมาทะเลาะกัน ให้มองไปที่ปัจจุบันและอนาคต",
+                health: "ระวังอุบัติเหตุจากการเดินทางหรือของมีคม ควรมีสติอยู่เสมอ"
+            },
+            {
+                num: 27, level: "ดีมาก", tag: "上吉籤",
+                poem: "ใบที่ยี่สิบเจ็ดเมฆเปิดเห็นฟ้าใส\nสิ่งใหม่ๆ กำลังเริ่มต้นขึ้น\nความหวังที่เคยเลือนรางกลับฟื้นคืน\nจะสดชื่นสมหวังดังตั้งใจ",
+                general: "การเปลี่ยนแปลงในทางที่ดีกำลังเกิดขึ้น สิ่งที่รอคอยกำลังจะได้รับคำตอบที่น่าพอใจ",
+                work: "มีโอกาสได้เริ่มโปรเจกต์ใหม่ที่ท้าทายและสร้างความก้าวหน้าให้ชีวิต",
+                finance: "การเงินเริ่มคล่องตัวขึ้น มีช่องทางทำมาหากินใหม่ๆ",
+                love: "ความสัมพันธ์สดใสขึ้น คนโสดจะได้เริ่มต้นคุยกับคนที่ถูกชะตา",
+                health: "ร่างกายฟื้นตัวดี สดชื่นแจ่มใส"
+            },
+            {
+                num: 28, level: "ดีมาก", tag: "上上籤",
+                poem: "ใบที่ยี่สิบแปดบริบูรณ์พูนสุข\nปราศจากทุกข์โศกโรคภัยทั้งผอง\nสมปรารถนาเงินทองไหลมากอง\nสิ่งศักดิ์สิทธิ์คุ้มครองตลอดกาล",
+                general: "ใบสุดท้ายแห่งความสมบูรณ์พูนสุข สิ่งศักดิ์สิทธิ์คุ้มครองปกปักรักษา คิดสิ่งใดสมความปรารถนาทุกประการ",
+                work: "ประสบความสำเร็จสูงสุดตามที่ตั้งใจไว้ มีความมั่นคงก้าวหน้าในระยะยาว",
+                finance: "มั่งคั่งอุดมสมบูรณ์ มีโชคลาภใหญ่และมีเงินเก็บเป็นกอบเป็นกำ",
+                love: "ความรักสมบูรณ์แบบ เข้าใจกันลึกซึ้ง ครอบครัวร่มเย็นเป็นสุข",
+                health: "สุขภาพแข็งแรงอายุยืนยาว หมั่นทำบุญอุทิศส่วนกุศลให้เจ้ากรรมนายเวรและเทวดาประจำตัว"
+            }
+        ];
+
+        /**
+         * 2. ระบบสร้างเสียงสังเคราะห์ (Web Audio API) 
+         * จำลองเสียงไม้เซียมซีกระทบกันและเสียงระฆังมงคล โดยไม่ต้องใช้ไฟล์เสียงภายนอก
+         */
+        class SoundEngine {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioContext();
+                }
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            // เสียงไม้เซียมซีกระทบกัน (Wood Clack)
+            playWoodClack() {
+                if (!this.enabled) return;
+                this.init();
+
+                const now = this.ctx.currentTime;
+                // สร้างเสียงเคาะไม้ 2-3 จังหวะสั้นๆ ซ้อนกันให้สมจริง
+                const clicks = [0, 0.04, 0.09];
+                clicks.forEach((delay, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    const filter = this.ctx.createBiquadFilter();
+
+                    // ใช้คลื่นสามเหลี่ยมผสมความถี่ไม้ไผ่กระทบกัน
+                    osc.type = 'triangle';
+                    const baseFreq = 650 + Math.random() * 350;
+                    osc.frequency.setValueAtTime(baseFreq, now + delay);
+                    osc.frequency.exponentialRampToValueAtTime(180, now + delay + 0.045);
+
+                    filter.type = 'bandpass';
+                    filter.frequency.value = 1100;
+                    filter.Q.value = 3.5;
+
+                    gain.gain.setValueAtTime(0.001, now + delay);
+                    gain.gain.linearRampToValueAtTime(0.35 - idx * 0.08, now + delay + 0.005);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.055);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start(now + delay);
+                    osc.stop(now + delay + 0.06);
+                });
+            }
+
+            // เสียงระฆัง/กังสดาลมงคลตอนได้ใบเซียมซี (Temple Chime)
+            playTempleChime() {
+                if (!this.enabled) return;
+                this.init();
+
+                const now = this.ctx.currentTime;
+                const freqs = [523.25, 659.25, 783.99, 1046.50]; // คอร์ด C Major ใสกังวาน
+                
+                freqs.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+
+                    gain.gain.setValueAtTime(0.001, now + idx * 0.06);
+                    gain.gain.linearRampToValueAtTime(0.18 / (idx + 1), now + idx * 0.06 + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.06 + 1.4);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start(now + idx * 0.06);
+                    osc.stop(now + idx * 0.06 + 1.5);
+                });
+            }
+        }
+
+        const sound = new SoundEngine();
+
+        /**
+         * 3. ตัวแปรสถานะและ DOM Elements
+         */
+        let isShaking = false;
+        let currentFortune = null;
+        let shakeInterval = null;
+
+        const shakerSection = document.getElementById('shaker-section');
+        const resultSection = document.getElementById('result-section');
+        const cylinderWrapper = document.getElementById('cylinder-wrapper');
+        const esiimsiSvg = document.getElementById('esiimsi-svg');
+        const luckyStick = document.getElementById('lucky-stick');
+        const shakeBtn = document.getElementById('shake-btn');
+        const statusText = document.getElementById('status-text');
+        const soundToggle = document.getElementById('sound-toggle');
+        const soundIcon = document.getElementById('sound-icon');
+        const soundText = document.getElementById('sound-text');
+        const motionBtn = document.getElementById('motion-permission-btn');
+
+        /**
+         * 4. ฟังก์ชันจัดการการเขย่าเซียมซี
+         */
+        function triggerShake() {
+            if (isShaking) return;
+            isShaking = true;
+
+            // เตรียมเสียง (ต้องทำใน User Interaction)
+            sound.init();
+
+            // อัปเดต UI
+            shakeBtn.disabled = true;
+            shakeBtn.classList.add('opacity-70', 'cursor-not-allowed');
+            statusText.textContent = "กำลังตั้งจิตอธิษฐาน... เขย่ากระบอกเซียมซี...";
+            esiimsiSvg.classList.add('shaking');
+
+            // เล่นเสียงไม้กระทบกันเป็นจังหวะระหว่างเขย่า
+            sound.playWoodClack();
+            shakeInterval = setInterval(() => {
+                sound.playWoodClack();
+                // สั่นมือถือเบาๆ ถ้าเบราว์เซอร์รองรับ
+                if (navigator.vibrate) {
+                    navigator.vibrate(40);
+                }
+            }, 260);
+
+            // เขย่าประมาณ 1.8 วินาที แล้วให้ไม้ติ้วหล่นออกมา
+            setTimeout(() => {
+                clearInterval(shakeInterval);
+                esiimsiSvg.classList.remove('shaking');
+                statusText.textContent = "ไม้เซียมซีหล่นออกมาแล้ว!";
+                
+                // เล่นแอนิเมชันไม้หล่น
+                luckyStick.classList.add('stick-falling');
+                sound.playTempleChime();
+                if (navigator.vibrate) {
+                    navigator.vibrate([80, 50, 120]);
+                }
+
+                // แสดงผลใบเซียมซีหลังจากไม้หล่นเสร็จ
+                setTimeout(() => {
+                    const randomIndex = Math.floor(Math.random() * FORTUNE_DATA.length);
+                    currentFortune = FORTUNE_DATA[randomIndex];
+                    renderResult(currentFortune);
+                    
+                    // รีเซ็ตสถานะกระบอกเผื่อกดเล่นใหม่
+                    luckyStick.classList.remove('stick-falling');
+                    shakeBtn.disabled = false;
+                    shakeBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                    isShaking = false;
+                }, 850);
+
+            }, 1700);
+        }
+
+        /**
+         * 5. แสดงผลคำทำนายลงบนการ์ด
+         */
+        function renderResult(data) {
+            document.getElementById('res-number').textContent = `ใบที่ ${data.num}`;
+            
+            const levelEl = document.getElementById('res-level');
+            levelEl.textContent = `ระดับ: ${data.level} (${data.tag})`;
+            
+            // ปรับสีป้ายระดับตามความหมาย
+            levelEl.className = "px-3.5 py-1 rounded-full text-xs sm:text-sm font-semibold border ";
+            if (data.level === "ดีมาก") {
+                levelEl.classList.add("bg-emerald-100", "text-emerald-800", "border-emerald-300");
+            } else if (data.level === "ปานกลาง") {
+                levelEl.classList.add("bg-amber-100", "text-amber-800", "border-amber-300");
+            } else {
+                levelEl.classList.add("bg-rose-100", "text-rose-800", "border-rose-300");
+            }
+
+            document.getElementById('res-poem').textContent = data.poem;
+            document.getElementById('res-general').textContent = data.general;
+            document.getElementById('res-work').textContent = data.work;
+            document.getElementById('res-finance').textContent = data.finance;
+            document.getElementById('res-love').textContent = data.love;
+            document.getElementById('res-health').textContent = data.health;
+
+            // สลับหน้าจอ
+            shakerSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /**
+         * 6. ฟังก์ชันวาดใบเซียมซีลงบน HTML5 Canvas และดาวน์โหลดเป็นไฟล์ PNG
+         * (ทำงานในตัว 100% ไม่ต้องพึ่ง Library ภายนอก จึงไม่ติดปัญหา CORS หรือ CDN ล่ม)
+         */
+        function downloadFortuneImage() {
+            if (!currentFortune) return;
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // กำหนดขนาดความละเอียดสูง (อัตราส่วนเหมาะสำหรับแชร์ลง Story / Line / IG)
+            const width = 900;
+            const height = 1320;
+            canvas.width = width;
+            canvas.height = height;
+
+            // 1. พื้นหลังสีแดงมงคล
+            const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+            bgGrad.addColorStop(0, '#6E0000');
+            bgGrad.addColorStop(0.5, '#4A0404');
+            bgGrad.addColorStop(1, '#300000');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, width, height);
+
+            // 2. กรอบกระดาษใบเซียมซีตรงกลาง
+            const pad = 45;
+            const cardW = width - pad * 2;
+            const cardH = height - pad * 2;
+
+            // เงาการ์ด
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 25;
+            ctx.shadowOffsetY = 10;
+
+            // พื้นกระดาษครีม
+            ctx.fillStyle = '#FDFBF7';
+            roundRect(ctx, pad, pad, cardW, cardH, 28, true, false);
+            ctx.shadowColor = 'transparent';
+
+            // กรอบเส้นทอง 2 ชั้น
+            ctx.strokeStyle = '#D4AF37';
+            ctx.lineWidth = 6;
+            roundRect(ctx, pad + 14, pad + 14, cardW - 28, cardH - 28, 20, false, true);
+
+            ctx.strokeStyle = '#8B0000';
+            ctx.lineWidth = 2;
+            roundRect(ctx, pad + 24, pad + 24, cardW - 48, cardH - 48, 14, false, true);
+
+            // 3. ส่วนหัวของใบเซียมซี
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#8B0000';
+            ctx.font = '600 24px "Prompt", sans-serif';
+            ctx.fillText('✦ ใบพยากรณ์ศาลเจ้ามงคล ✦', width / 2, 130);
+
+            ctx.font = 'bold 64px "Noto Serif Thai", serif';
+            ctx.fillText(`เซียมซี ใบที่ ${currentFortune.num}`, width / 2, 205);
+
+            // ป้ายระดับคำทำนาย
+            let badgeBg = '#D1FAE5', badgeText = '#065F46';
+            if (currentFortune.level === 'ปานกลาง') { badgeBg = '#FEF3C7'; badgeText = '#92400E'; }
+            if (currentFortune.level === 'ควรระวัง') { badgeBg = '#FFE4E6'; badgeText = '#9F1239'; }
+
+            const badgeW = 320, badgeH = 48;
+            ctx.fillStyle = badgeBg;
+            roundRect(ctx, (width - badgeW) / 2, 230, badgeW, badgeH, 24, true, false);
+            ctx.fillStyle = badgeText;
+            ctx.font = '600 24px "Prompt", sans-serif';
+            ctx.fillText(`ระดับ: ${currentFortune.level} (${currentFortune.tag})`, width / 2, 262);
+
+            // เส้นคั่นประ
+            ctx.strokeStyle = 'rgba(139, 0, 0, 0.25)';
+            ctx.setLineDash([8, 8]);
+            ctx.beginPath();
+            ctx.moveTo(100, 305);
+            ctx.lineTo(width - 100, 305);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // 4. กล่องกลอนคำทำนาย
+            ctx.fillStyle = '#FFFBEB';
+            roundRect(ctx, 95, 328, width - 190, 215, 18, true, false);
+            ctx.strokeStyle = '#FDE68A';
+            ctx.lineWidth = 2;
+            roundRect(ctx, 95, 328, width - 190, 215, 18, false, true);
+
+            ctx.fillStyle = '#4A0404';
+            ctx.font = '600 28px "Noto Serif Thai", serif';
+            const poemLines = currentFortune.poem.split('\n');
+            poemLines.forEach((line, i) => {
+                ctx.fillText(line, width / 2, 378 + i * 44);
+            });
+
+            // 5. คำทำนายโดยรวมและหมวดหมู่ต่างๆ
+            ctx.textAlign = 'left';
+            let curY = 590;
+
+            const sections = [
+                { title: 'คำทำนายโดยรวม', text: currentFortune.general, color: '#8B0000' },
+                { title: '💼 การงาน / การเรียน', text: currentFortune.work, color: '#8B0000' },
+                { title: '💰 การเงิน / โชคลาภ', text: currentFortune.finance, color: '#8B0000' },
+                { title: '💖 ความรัก / ครอบครัว', text: currentFortune.love, color: '#8B0000' },
+                { title: '🌿 สุขภาพ / คำแนะนำ', text: currentFortune.health, color: '#8B0000' }
+            ];
+
+            sections.forEach(sec => {
+                ctx.fillStyle = sec.color;
+                ctx.font = 'bold 24px "Prompt", sans-serif';
+                ctx.fillText(sec.title, 100, curY);
+                curY += 34;
+
+                ctx.fillStyle = '#292524';
+                ctx.font = '400 22px "Prompt", sans-serif';
+                curY = wrapText(ctx, sec.text, 100, curY, width - 200, 32);
+                curY += 22;
+            });
+
+            // 6. ท้ายการ์ด
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#A8A29E';
+            ctx.font = '400 19px "Prompt", sans-serif';
+            ctx.fillText('ขอให้โชคดีมีชัย สมปรารถนาทุกประการ • ศาลเจ้ามงคลออนไลน์', width / 2, height - 85);
+
+            // สั่งดาวน์โหลดรูปภาพ
+            try {
+                const dataUrl = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.download = `Esiimsi-No-${currentFortune.num}.png`;
+                link.href = dataUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast('บันทึกรูปภาพใบเซียมซีเรียบร้อยแล้ว!', '🖼️');
+            } catch (err) {
+                showToast('ไม่สามารถบันทึกภาพได้ กรุณาแคปหน้าจอแทน', '⚠️');
+            }
+        }
+
+        // ฟังก์ชันช่วยวาดสี่เหลี่ยมมุมมนบน Canvas
+        function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+            if (fill) ctx.fill();
+            if (stroke) ctx.stroke();
+        }
+
+        // ฟังก์ชันตัดบรรทัดข้อความภาษาไทย/อังกฤษอัตโนมัติบน Canvas
+        function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+            // แยกคำตามช่องว่างและตัดแบ่งตัวอักษรกรณีคำยาวติดกัน
+            const chars = text.split('');
+            let line = '';
+            let currentY = y;
+
+            for (let n = 0; n < chars.length; n++) {
+                const testLine = line + chars[n];
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && n > 0) {
+                    ctx.fillText(line, x, currentY);
+                    line = chars[n];
+                    currentY += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line, x, currentY);
+            return currentY + lineHeight;
+        }
+
+        /**
+         * 7. ฟังก์ชันแชร์คำทำนาย (Web Share API + Fallback คัดลอกข้อความ)
+         */
+        async function shareFortune() {
+            if (!currentFortune) return;
+
+            const shareText = `🧧 ฉันเสี่ยงเซียมซีได้ "ใบที่ ${currentFortune.num}" (${currentFortune.level})\n\n"${currentFortune.poem}"\n\nคำทำนาย: ${currentFortune.general}\n\nลองเสี่ยงเซียมซีออนไลน์ได้ที่: ${window.location.href}`;
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: `เซียมซีใบที่ ${currentFortune.num} - ศาลเจ้ามงคล`,
+                        text: shareText,
+                        url: window.location.href
+                    });
+                    return;
+                } catch (err) {
+                    // หากผู้ใช้กดยกเลิกการแชร์ ไม่ต้องทำอะไร
+                    if (err.name === 'AbortError') return;
+                }
+            }
+
+            // Fallback: คัดลอกข้อความลงคลิปบอร์ด
+            const textarea = document.createElement('textarea');
+            textarea.value = shareText;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('คัดลอกคำทำนายลงคลิปบอร์ดแล้ว!', '📋');
+            } catch (e) {
+                showToast('ไม่สามารถคัดลอกข้อความได้', '⚠️');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        /**
+         * 8. แสดงข้อความแจ้งเตือนชั่วคราว (Toast)
+         */
+        let toastTimer = null;
+        function showToast(msg, icon = '✨') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            document.getElementById('toast-icon').textContent = icon;
+            
+            toast.classList.remove('opacity-0');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 3000);
+        }
+
+        /**
+         * 9. ระบบตรวจจับการเขย่ามือถือจริง (DeviceMotion API)
+         */
+        let lastShakeTime = 0;
+        const SHAKE_THRESHOLD = 18; // ความแรงในการเขย่า
+
+        function handleDeviceMotion(event) {
+            if (isShaking || !resultSection.classList.contains('hidden')) return;
+
+            const acc = event.accelerationIncludingGravity;
+            if (!acc) return;
+
+            const totalAcc = Math.sqrt(acc.x * acc.x + acc.y * acc.y + acc.z * acc.z);
+            // หักค่าแรงโน้มถ่วงโลก (~9.8)
+            const delta = Math.abs(totalAcc - 9.8);
+
+            if (delta > SHAKE_THRESHOLD) {
+                const now = Date.now();
+                if (now - lastShakeTime > 1000) {
+                    lastShakeTime = now;
+                    triggerShake();
+                }
+            }
+        }
+
+        function setupMotionSensor() {
+            if (typeof DeviceMotionEvent !== 'undefined') {
+                // สำหรับ iOS 13+ ต้องขอ Permission จากผู้ใช้ก่อน
+                if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                    motionBtn.classList.remove('hidden');
+                    motionBtn.addEventListener('click', async () => {
+                        try {
+                            const response = await DeviceMotionEvent.requestPermission();
+                            if (response === 'granted') {
+                                window.addEventListener('devicemotion', handleDeviceMotion);
+                                motionBtn.classList.add('hidden');
+                                showToast('เปิดใช้งานโหมดเขย่ามือถือแล้ว!', '📱');
+                            } else {
+                                showToast('ไม่ได้รับอนุญาตให้เข้าถึงเซนเซอร์', '⚠️');
+                            }
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    });
+                } else {
+                    // Android / เบราว์เซอร์ทั่วไป เปิดรับฟังทันที
+                    window.addEventListener('devicemotion', handleDeviceMotion);
+                }
+            }
+        }
+
+        /**
+         * 10. ผูก Event Listeners ทั้งหมด
+         */
+        window.addEventListener('DOMContentLoaded', () => {
+            setupMotionSensor();
+
+            // กดปุ่มเขย่า หรือแตะที่กระบอกเซียมซี
+            shakeBtn.addEventListener('click', triggerShake);
+            cylinderWrapper.addEventListener('click', triggerShake);
+
+            // ปุ่มเปิด/ปิดเสียง
+            soundToggle.addEventListener('click', () => {
+                sound.enabled = !sound.enabled;
+                if (sound.enabled) {
+                    soundIcon.textContent = '🔊';
+                    soundText.textContent = 'เสียงเปิด';
+                    sound.playWoodClack();
+                } else {
+                    soundIcon.textContent = '🔇';
+                    soundText.textContent = 'เสียงปิด';
+                }
+            });
+
+            // ปุ่มบันทึกภาพใบเซียมซี
+            document.getElementById('save-img-btn').addEventListener('click', downloadFortuneImage);
+
+            // ปุ่มแชร์
+            document.getElementById('share-btn').addEventListener('click', shareFortune);
+
+            // ปุ่มเสี่ยงใหม่อีกครั้ง
+            document.getElementById('reset-btn').addEventListener('click', () => {
+                resultSection.classList.add('hidden');
+                shakerSection.classList.remove('hidden');
+                statusText.textContent = "ตั้งจิตอธิษฐานใหม่ แล้วเขย่ากระบอกเซียมซี";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
